@@ -9,6 +9,7 @@ export class Autosize implements AfterViewInit {
   private el: HTMLElement;
   private _minHeight: string;
   private _maxHeight: string;
+  private _overflow: string;
   private _lastHeight: number;
   private _clientWidth: number;
 
@@ -28,6 +29,14 @@ export class Autosize implements AfterViewInit {
   set maxHeight(val: string) {
     this._maxHeight = val;
     this.updateMaxHeight();
+  }
+
+  @Input('overflow')
+  get overflow(): string {
+    return this._overflow;
+  }
+  set overflow(val: string) {
+    this._overflow = val;
   }
 
   @HostListener('window:resize', ['$event.target'])
@@ -67,7 +76,7 @@ export class Autosize implements AfterViewInit {
     if (this.el.style.height == this.element.nativeElement.scrollHeight + 'px') {
       return;
     }
-    this.el.style.overflow = 'hidden';
+    this.el.style.overflowY = this._overflow;
     this.el.style.height = 'auto';
     this.el.style.height = this.el.scrollHeight + 'px';
   }
