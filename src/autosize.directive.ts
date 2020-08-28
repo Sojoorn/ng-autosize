@@ -86,6 +86,10 @@ export class Autosize implements AfterViewInit {
     this.el.style.minHeight = this._minHeight + 'px';
   }
 
+  setHeight(): void {
+    this.el.style.height = this._minHeight + 'px';
+  }
+
   updateMaxHeight(): void {
     // Set textarea max height if input defined
     this.el.style.maxHeight = this._maxHeight + 'px';
