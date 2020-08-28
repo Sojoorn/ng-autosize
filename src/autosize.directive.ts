@@ -84,11 +84,7 @@ export class Autosize implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.el.clientWidth === this._clientWidth) {
-      return
-    };
-    this._clientWidth = this.element.nativeElement.clientWidth;
-    this.adjust();
+    this.resetHeightEl();
   }
 
   adjust(): void {
@@ -107,7 +103,10 @@ export class Autosize implements AfterViewInit, OnDestroy {
   }
 
   resetHeightEl(): void {
-    this.el.style.height = this._minHeight + 'px';
+    if (this.el.clientWidth === this._clientWidth) {
+      return
+    };
+    this._clientWidth = this.element.nativeElement.clientWidth;
     this.adjust();
   }
 
