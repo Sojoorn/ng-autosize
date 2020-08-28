@@ -1,10 +1,10 @@
-import { Input, AfterViewInit, ElementRef, HostListener, Directive } from '@angular/core';
+import { Input, AfterViewInit, ElementRef, HostListener, Directive, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: 'textarea[autosize]'
 })
 
-export class Autosize implements AfterViewInit {
+export class Autosize implements AfterViewInit, OnDestroy {
 
   private el: HTMLElement;
   private _minHeight: string;
@@ -46,7 +46,7 @@ export class Autosize implements AfterViewInit {
   }
   set resetHeight(val: boolean) {
     this._resetHeight = val;
-    if (!this._resetHeight) {
+    if (this._resetHeight) {
       this.resetHeightEl();
     }
   }
@@ -83,6 +83,14 @@ export class Autosize implements AfterViewInit {
     this.adjust();
   }
 
+  ngOnDestroy(): void {
+    if (this.el.clientWidth === this._clientWidth) {
+      return
+    };
+    this._clientWidth = this.element.nativeElement.clientWidth;
+    this.adjust();
+  }
+
   adjust(): void {
     // perform height adjustments after input changes, if height is different
     if (this.el.style.height == this.element.nativeElement.scrollHeight + 'px') {
@@ -100,6 +108,7 @@ export class Autosize implements AfterViewInit {
 
   resetHeightEl(): void {
     this.el.style.height = this._minHeight + 'px';
+    this.adjust();
   }
 
   updateMaxHeight(): void {
