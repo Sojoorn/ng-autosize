@@ -10,6 +10,7 @@ export class Autosize implements AfterViewInit {
   private _minHeight: string;
   private _maxHeight: string;
   private _overflow: string;
+  private _resetHeight: boolean;
   private _lastHeight: number;
   private _clientWidth: number;
 
@@ -37,6 +38,17 @@ export class Autosize implements AfterViewInit {
   }
   set overflow(val: string) {
     this._overflow = val;
+  }
+
+  @Input('resetHeight')
+  get resetHeight(): boolean {
+    return this._resetHeight;
+  }
+  set resetHeight(val: boolean) {
+    this._resetHeight = val;
+    if (!this._resetHeight) {
+      this.resetHeightEl();
+    }
   }
 
   @HostListener('window:resize', ['$event.target'])
@@ -86,7 +98,7 @@ export class Autosize implements AfterViewInit {
     this.el.style.minHeight = this._minHeight + 'px';
   }
 
-  setHeight(): void {
+  resetHeightEl(): void {
     this.el.style.height = this._minHeight + 'px';
   }
 
